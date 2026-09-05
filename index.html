@@ -5,6 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Prachi Lipsa Mohanty — CSE Student &amp; Developer</title>
 <meta name="description" content="Portfolio of Prachi Lipsa Mohanty, B.Tech CSE student at Lovely Professional University, exploring programming, web development and cybersecurity.">
+<script>
+  /* Apply saved theme before first paint to avoid a flash of the wrong colors */
+  (function(){
+    try{
+      var t = localStorage.getItem('plm-theme');
+      if(t === 'light'){ document.documentElement.setAttribute('data-theme','light'); }
+    }catch(e){}
+  })();
+</script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,10 +43,37 @@
 
     --max-w:         1180px;
     --pad:           clamp(1.25rem, 4vw, 3rem);
+
+    --nav-bg:        rgba(10,14,23,0.78);
+    --glow-opacity:  0.30;
+    color-scheme: dark;
+  }
+
+  html[data-theme="light"]{
+    --bg:            #f3f5fb;
+    --bg-raised:     #ffffff;
+    --bg-panel:      #ffffff;
+    --line:          rgba(16,20,35,0.09);
+    --line-strong:   rgba(16,20,35,0.16);
+    --text:          #12141d;
+    --text-dim:      #4c5468;
+    --text-dimmer:   #7a8095;
+    --blue:          #3167e0;
+    --violet:        #7c5ce8;
+    --cyan:          #0f918c;
+    --amber:         #b07c14;
+
+    --nav-bg:        rgba(255,255,255,0.78);
+    --glow-opacity:  0.16;
+    color-scheme: light;
   }
 
   *,*::before,*::after{ box-sizing:border-box; }
   html{ scroll-behavior:smooth; }
+  html, body{ transition:background-color 0.35s ease, color 0.35s ease; }
+  body, header.site-nav, .terminal, .card, .project, .cert-card, .tl-item{
+    transition:background-color 0.35s ease, border-color 0.35s ease, color 0.35s ease, box-shadow 0.35s ease;
+  }
   @media (prefers-reduced-motion: reduce){
     html{ scroll-behavior:auto; }
     *,*::before,*::after{
@@ -81,8 +117,24 @@
 
   .wrap{ max-width:var(--max-w); margin:0 auto; padding-left:var(--pad); padding-right:var(--pad); position:relative; z-index:1; }
 
-  section{ position:relative; z-index:1; padding:clamp(4rem,9vw,7rem) 0; border-bottom:1px solid var(--line); }
+  section{ position:relative; z-index:1; padding:clamp(4rem,9vw,7rem) 0; border-bottom:1px solid var(--line); overflow:hidden; }
   section:last-of-type{ border-bottom:none; }
+
+  /* Soft colored glow blobs behind each section's content */
+  section.section-glow::before,
+  section.section-glow::after{
+    content:'';
+    position:absolute;
+    width:min(46vw, 520px);
+    height:min(46vw, 520px);
+    border-radius:50%;
+    filter:blur(90px);
+    opacity:var(--glow-opacity);
+    pointer-events:none;
+    z-index:0;
+  }
+  section.section-glow::before{ background:var(--glow1); top:-14%; left:-10%; }
+  section.section-glow::after{ background:var(--glow2); bottom:-18%; right:-8%; }
 
   .kicker{
     font-family:var(--font-mono);
@@ -148,7 +200,7 @@
   header.site-nav{
     position:fixed; top:0; left:0; right:0; z-index:100;
     backdrop-filter:blur(10px);
-    background:rgba(10,14,23,0.78);
+    background:var(--nav-bg);
     border-bottom:1px solid var(--line);
   }
   .nav-inner{
@@ -164,6 +216,7 @@
   }
   .nav-logo span{ color:var(--cyan); }
 
+  .nav-right{ display:flex; align-items:center; gap:2rem; }
   .nav-links{ display:flex; gap:2rem; }
   .nav-links a{
     font-family:var(--font-mono);
@@ -193,7 +246,24 @@
   }
   .nav-toggle svg{ width:18px; height:18px; }
 
+  .theme-toggle{
+    display:flex; align-items:center; justify-content:center;
+    width:38px; height:38px;
+    flex-shrink:0;
+    background:var(--bg-panel);
+    border:1px solid var(--line-strong);
+    border-radius:50%;
+    color:var(--text);
+    transition:border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+  }
+  .theme-toggle:hover{ border-color:var(--cyan); transform:translateY(-2px); }
+  .theme-toggle svg{ width:17px; height:17px; }
+  .theme-toggle #iconSun{ display:none; }
+  html[data-theme="light"] .theme-toggle #iconSun{ display:block; }
+  html[data-theme="light"] .theme-toggle #iconMoon{ display:none; }
+
   @media (max-width: 820px){
+    .nav-right{ gap:0.75rem; }
     .nav-links{
       position:fixed; top:64px; left:0; right:0;
       flex-direction:column; gap:0;
@@ -745,27 +815,33 @@
 <header class="site-nav">
   <div class="nav-inner">
     <a href="#top" class="nav-logo">plm<span>.</span>dev</a>
-    <nav class="nav-links" id="navLinks">
-      <a href="#about">About</a>
-      <a href="#skills">Skills</a>
-      <a href="#projects">Projects</a>
-      <a href="#training">Training</a>
-      <a href="#certifications">Certifications</a>
-      <a href="#achievements">Achievements</a>
-      <a href="#education">Education</a>
-      <a href="#contact">Contact</a>
-    </nav>
-    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu" aria-expanded="false">
-      <svg id="navIconOpen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-      <svg id="navIconClose" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
-    </button>
+    <div class="nav-right">
+      <nav class="nav-links" id="navLinks">
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#training">Training</a>
+        <a href="#certifications">Certifications</a>
+        <a href="#achievements">Achievements</a>
+        <a href="#education">Education</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle light and dark mode">
+        <svg id="iconSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4.5"/><line x1="12" y1="19.5" x2="12" y2="22"/><line x1="2" y1="12" x2="4.5" y2="12"/><line x1="19.5" y1="12" x2="22" y2="12"/><line x1="4.9" y1="4.9" x2="6.6" y2="6.6"/><line x1="17.4" y1="17.4" x2="19.1" y2="19.1"/><line x1="4.9" y1="19.1" x2="6.6" y2="17.4"/><line x1="17.4" y1="6.6" x2="19.1" y2="4.9"/></svg>
+        <svg id="iconMoon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.5A8.5 8.5 0 1 1 11.5 3a6.8 6.8 0 0 0 9.5 9.5Z"/></svg>
+      </button>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <svg id="navIconOpen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        <svg id="navIconClose" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+      </button>
+    </div>
   </div>
 </header>
 
 <main id="top">
 
   <!-- HERO -->
-  <section class="hero" id="hero">
+  <section class="hero section-glow" id="hero" style="--glow1:#4fd6d1;--glow2:#9b7bff">
     <div class="wrap hero-grid">
       <div>
         <p class="hero-eyebrow"><span class="dot"></span> Available for internships &amp; collaborations</p>
@@ -804,7 +880,7 @@
   </section>
 
   <!-- ABOUT -->
-  <section id="about">
+  <section id="about" class="section-glow" style="--glow1:#4c8dff;--glow2:#9b7bff">
     <div class="wrap">
       <p class="kicker"><span class="num">01</span> / About</p>
       <h2 class="section-title reveal">A CSE student who learns by building</h2>
@@ -825,7 +901,7 @@
   </section>
 
   <!-- SKILLS -->
-  <section id="skills">
+  <section id="skills" class="section-glow" style="--glow1:#9b7bff;--glow2:#4fd6d1">
     <div class="wrap">
       <p class="kicker"><span class="num">02</span> / Skills</p>
       <h2 class="section-title reveal">What I work with</h2>
@@ -867,7 +943,7 @@
   </section>
 
   <!-- PROJECTS -->
-  <section id="projects">
+  <section id="projects" class="section-glow" style="--glow1:#4fd6d1;--glow2:#4c8dff">
     <div class="wrap">
       <p class="kicker"><span class="num">03</span> / Projects</p>
       <h2 class="section-title reveal">Things I've built</h2>
@@ -1014,7 +1090,7 @@
   </section>
 
   <!-- TRAINING -->
-  <section id="training">
+  <section id="training" class="section-glow" style="--glow1:#e8b96b;--glow2:#4c8dff">
     <div class="wrap">
       <p class="kicker"><span class="num">04</span> / Training</p>
       <h2 class="section-title reveal">Structured learning</h2>
@@ -1030,7 +1106,7 @@
   </section>
 
   <!-- CERTIFICATIONS -->
-  <section id="certifications">
+  <section id="certifications" class="section-glow" style="--glow1:#e8b96b;--glow2:#9b7bff">
     <div class="wrap">
       <p class="kicker"><span class="num">05</span> / Certifications</p>
       <h2 class="section-title reveal">Certifications &amp; achievements</h2>
@@ -1073,7 +1149,7 @@
   </section>
 
   <!-- ACHIEVEMENTS -->
-  <section id="achievements">
+  <section id="achievements" class="section-glow" style="--glow1:#4fd6d1;--glow2:#e8b96b">
     <div class="wrap">
       <p class="kicker"><span class="num">06</span> / Achievements</p>
       <h2 class="section-title reveal">Highlights so far</h2>
@@ -1104,7 +1180,7 @@
   </section>
 
   <!-- EDUCATION -->
-  <section id="education">
+  <section id="education" class="section-glow" style="--glow1:#4c8dff;--glow2:#4fd6d1">
     <div class="wrap">
       <p class="kicker"><span class="num">07</span> / Education</p>
       <h2 class="section-title reveal">Academic path</h2>
@@ -1129,7 +1205,7 @@
   </section>
 
   <!-- CURRENTLY EXPLORING -->
-  <section id="exploring">
+  <section id="exploring" class="section-glow" style="--glow1:#9b7bff;--glow2:#e8b96b">
     <div class="wrap">
       <p class="kicker"><span class="num">08</span> / Current focus</p>
       <h2 class="section-title reveal">Currently exploring</h2>
@@ -1159,7 +1235,7 @@
   </section>
 
   <!-- CONTACT -->
-  <section id="contact">
+  <section id="contact" class="section-glow" style="--glow1:#4c8dff;--glow2:#9b7bff">
     <div class="wrap contact-inner">
       <div class="reveal">
         <p class="kicker"><span class="num">09</span> / Contact</p>
@@ -1217,6 +1293,19 @@
 <script>
 (function(){
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Light / dark theme toggle */
+  var themeToggle = document.getElementById('themeToggle');
+  themeToggle.addEventListener('click', function(){
+    var isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    var next = isLight ? 'dark' : 'light';
+    if(next === 'light'){
+      document.documentElement.setAttribute('data-theme', 'light');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+    }
+    try{ localStorage.setItem('plm-theme', next); }catch(e){}
+  });
 
   /* Mobile nav */
   var navToggle = document.getElementById('navToggle');
